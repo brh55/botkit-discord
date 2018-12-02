@@ -1,0 +1,25 @@
+{
+  "name": "botkit-discord",
+  "version": "1.0.0",
+  "description": "A botkit connector for Discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "keywords": [
+    "botkit",
+    "chatbots",
+    "discord",
+    "discord bots",
+    "discord javascript"
+  ],
+  "author": "Brandon Him",
+  "license": "MIT",
+  "dependencies": {
+    "botkit": "^0.6.21",
+    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6"
+  },
+  "devDependencies": {
+    "ava": "^0.25.0"
+  }
+}
