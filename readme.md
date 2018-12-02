@@ -4,7 +4,7 @@
 
 This Botkit connector would not be possible without the powerful and simple library, [izy521/discord.io](https://github.com/izy521/discord.io). 
 
-> Please Note: This is still a work in progress and I will continue to add more functionalities as I dig deeper into documentation.
+> Please Note: This is still a work in progress and I will slowly continue to add more functionalities, documentation as I dig deeper into Discord API documentation.
 
 ![Example Image](https://user-images.githubusercontent.com/6020066/49334369-4151ba80-f589-11e8-8b8a-0086bcd956a2.png)
 
