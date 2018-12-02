@@ -1,6 +1,6 @@
 {
   "name": "botkit-discord",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A botkit connector for Discord",
   "main": "index.js",
   "scripts": {
