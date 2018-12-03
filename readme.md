@@ -6,6 +6,8 @@ This Botkit connector would not be possible without the powerful and simple libr
 
 > Note this is still a work in progress and open to additional features and suggestions
 
+![Example Image](https://user-images.githubusercontent.com/6020066/49334369-4151ba80-f589-11e8-8b8a-0086bcd956a2.png)
+
 ## Usage
 
 ```javascript
