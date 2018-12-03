@@ -19,6 +19,7 @@ const DiscordBot = (configuration) => {
 
 	const discordBotkit = Botkit.core(configuration || {});
 	discordBotkit.defineBot(botDefinition);
+	discordBotkit.api = require('./api')(client);
 	// Attach Handlers and Middlewares
 	discordBotkit.handleMessageRecieve = newMessageHandler;
 	discordBotkit.middleware.normalize.use(middleware.normalize.handler);
@@ -54,6 +55,25 @@ const DiscordBot = (configuration) => {
 		discordBotkit.trigger('disconnect', [discordBotkit, event]);
 	});
 
+	client.on('presence', (user, userID, status, game, event) => {
+		const presenceEvent = event.d;
+		discordBotkit.trigger('presence', [discordBotkit, event]);
+	});
+
+	client.on('guildMemberAdd', member => discordBotkit.trigger('guild_member_add', [discordBotkit, member]));
+	client.on('guildMemberUpdate', (oldMember, newMember) => 
+		discordBotkit.trigger('guild_member_update', [discordBotkit, { oldMember, newMember }]
+	));
+	client.on('guildMemberRemove', member => discordBotkit.trigger('guild_member_remove', [discordBotkit, member]));
+
+	client.on('guildRoleCreate', role => discordBotkit.trigger('guild_role_create', [discordBotkit, role]));
+	client.on('guildRoleUpdate', (oldRole, newRole) => discordBotkit.trigger('guild_role_update', [discordBotkit, { oldRole, newRole }]));
+	client.on('guildRoleDelete', role => discordBotkit.trigger('guild_role_delete', [discordBotkit, role]));
+
+	client.on('channelCreate', channel => discordBotkit.trigger('guild_role_create', [discordBotkit, channel]));
+	client.on('channelUpdate', (newChannel, oldChannel) => discordBotkit.trigger('guild_role_update', [discordBotkit, { newChannel, oldChannel }]));
+	client.on('channelDelete', channel => discordBotkit.trigger('guild_role_delete', [discordBotkit, channel]))
+	
 	// Stay Alive Please
 	discordBotkit.startTicking();
 

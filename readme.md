@@ -4,7 +4,7 @@
 
 This Botkit connector would not be possible without the powerful and simple library, [izy521/discord.io](https://github.com/izy521/discord.io). 
 
-> Please Note: This is still a work in progress and I will continue to add more functionalities as I dig deeper into documentation.
+> Note this is still a work in progress and open to additional features and suggestions
 
 ## Usage
 
@@ -24,6 +24,13 @@ discordBot.hears('hello','direct_message',(bot, message) => {
 Refer to [Botkit documentation](https://botkit.ai/docs/) to utilize all of the other Botkit features.
 
 ## Events
+You can handle particular events for your bot using the `.on()` method.
+
+```js
+discordBot.on(EVENT_NAME, event => {
+	// do stuff
+});
+```
 
 ### Incoming Events
 
@@ -40,7 +47,37 @@ Refer to [Botkit documentation](https://botkit.ai/docs/) to utilize all of the o
 | disconnect | Bot has disconnected or failed to login |
 | ready      | Bot is connected                        |
 
-*More to come (Audio, Voice, etc)* 
+### Guild Events
+
+> Guilds can also be referred to "server"
+
+| Event               | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| guild_member_add    | A member added to guild (server)                             |
+| guild_member_update | An existing guild member has bene updated                    |
+| guild_member_remove | A member removed from guild                                  |
+| guild_role_create   | A new [guild role](https://discordapp.com/developers/docs/topics/permissions#role-object) created |
+| guild_role_update   | An existing guild role has been updated                      |
+| guild_role_delete   | A guild role deleted                                         |
+| channel_create      | A channel has been create                                    |
+| channel_update      | An existing channel has been updated                         |
+| channel_delete      | A channel has been deleted                                   |
+
+## API
+
+For convenience the following methods from discord.io library is available on the `controller.api`
+
+- setPresence
+- editUserInfo
+- getAllUsers
+- fixMessage
+- simulateTyping
+- getMessage
+- getMessages
+- editMessage
+- deleteMessage
+- pinMessage 
+- deletePinnedMessage
 
 ## License
 
