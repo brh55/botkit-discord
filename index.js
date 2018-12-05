@@ -79,3 +79,5 @@ const DiscordBot = (configuration) => {
 
 	return discordBotkit
 };
+
+module.exports = DiscordBot;
