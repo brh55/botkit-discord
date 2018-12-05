@@ -1,6 +1,6 @@
 {
   "name": "botkit-discord",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A Botkit connector for Discord allowing you to create extensible Discord bots.",
   "main": "index.js",
   "scripts": {

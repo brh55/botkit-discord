@@ -10,7 +10,6 @@ function botDefinition (botkit, configuration) {
 	const discordClient = botkit.config.client;
 
 	bot.send = (message, cb) => {
-		console.log(message);
 		discordClient.sendMessage({
 			to: message.to,
 			message: message.text

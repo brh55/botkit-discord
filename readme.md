@@ -19,7 +19,11 @@ const config = {
 const discordBot = BotkitDiscord(config);
 
 discordBot.hears('hello','direct_message',(bot, message) => {
-    bot.reply('how goes there :)!')
+    bot.reply(message, 'how goes there :)!');
+});
+
+discordBot.hears('.*', 'direct_mention', (bot, message) => {
+	bot.reply(message, 'leave me to be please.');
 });
 ```
 
