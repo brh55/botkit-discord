@@ -18,7 +18,7 @@ function botDefinition (botkit, configuration) {
 	}
 
 	bot.reply = (src, resp, cb) => {
-		const message = {};
+		let message = {};
 		if (typeof(resp) == 'string') {
 			message.text = resp;
 		} else {
