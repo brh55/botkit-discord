@@ -7,7 +7,8 @@ const categorize = (bot, message) => {
 
 	if (
 		message.raw_message.event.t == 'MESSAGE_CREATE' &&
-		message.guideId
+		!message.guild_id &&
+		message.author.id !== botId
 	) {
 		message.type = 'direct_message';
 	}
