@@ -24,7 +24,7 @@ const DiscordBot = (configuration) => {
 	discordBotkit.handleMessageRecieve = newMessageHandler;
 	discordBotkit.middleware.normalize.use(middleware.normalize.handler);
 	discordBotkit.middleware.categorize.use(middleware.categorize.handler);
-    discordBotkit.middleware.format.use(middleware.format.handler);
+	discordBotkit.middleware.format.use(middleware.format.handler);
 
 	// discord.io forwarding and event handling
 	// may move this elsewhere
@@ -44,6 +44,7 @@ const DiscordBot = (configuration) => {
 				user, userID, channelID, message, event
 			}
 		};
+
 		discordBotkit.handleMessageRecieve(req, {}, discordBotkit);
 	});
 
