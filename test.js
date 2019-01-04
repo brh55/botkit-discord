@@ -20,9 +20,15 @@ test('Test categorization', t => {
 			}
 		}
 	};
+
+	const ambientMessage = Object.assign({}, normalized);
+	ambientMessage.guildId = '123456';
+	const ambientMessageCategorize = middlewares.categorize.exec(botStub, ambientMessage);
+	t.is(ambientMessageCategorize.type, 'ambient');
+
 	const insertMessage = normalized;
 	const messageRecieved = middlewares.categorize.exec(botStub, insertMessage);
-	t.is(messageRecieved.type, 'message_received');
+	t.is(messageRecieved.type, 'direct_message');
 
 	insertMessage.text = '<@123456> hello!';
 	const directMention = middlewares.categorize.exec(botStub, insertMessage);
