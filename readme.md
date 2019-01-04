@@ -42,6 +42,7 @@ discordBot.on(EVENT_NAME, event => {
 
 | Event          | Description                                                  |
 | -------------- | ------------------------------------------------------------ |
+| ambient        | a channel the bot is in has a new message                    |
 | direct_message | the bot received a direct message from a user                |
 | direct_mention | the bot was addressed directly in a channel ("@bot hello")   |
 | mention        | the bot was mentioned by someone in a message ("hello @bot") |

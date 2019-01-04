@@ -5,9 +5,13 @@ const isDirectMention = (id, messageText) => messageText.indexOf(id) === 2;
 const categorize = (bot, message) => {
 	const botId = bot.botkit.config.client.id;
 
+	if (message.raw_message.event.t == 'MESSAGE_CREATE' && message.guildId) {
+		message.type = 'ambient';
+	}
+
 	if (
 		message.raw_message.event.t == 'MESSAGE_CREATE' &&
-		!message.guild_id &&
+		!message.guildId &&
 		message.author.id !== botId
 	) {
 		message.type = 'direct_message';
