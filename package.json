@@ -21,6 +21,7 @@
     "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6"
   },
   "devDependencies": {
-    "ava": "^0.25.0"
+    "ava": "^0.25.0",
+    "hoek": ">=4.2.1"
   }
 }
