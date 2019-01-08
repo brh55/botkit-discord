@@ -24,16 +24,20 @@ function botDefinition (botkit, configuration) {
 			message = resp;
 		}
 
-		if (src.type === 'direct_mention') {
-			message.to = src.author.id;
-		}
-
-		if (
-			src.type === 'mention' ||
-			src.type === 'direct_mention'
-		) {
-			message.to = src.channelId;
-		}
+		switch(src.type) {
+				case 'direct_message':
+				case 'direct_mention':
+					// In these two cases, we reply directly to the Author with a Direct Message
+					message.to = src.author.id;
+					break;
+				case 'mention':
+				case 'ambient':
+					// If the bot was just mentioned or if it's a channel message, we reply in the channel
+					message.to = src.channelId;
+					break;
+				default:
+					message.to = src.channelId;
+			}
 
 		bot.say(message, cb);
 	}
