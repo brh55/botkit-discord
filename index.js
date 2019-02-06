@@ -4,13 +4,10 @@ const Discord = require('discord.js');
 const middleware = require('./middleware');
 const botDefinition = require('./bot');
 
-var fs = require('fs')
-const util = require('util')
-
 const newMessageHandler = (message, controller) => {
 	const bot = controller.spawn({});
 	controller.ingest(bot, message, {});
-}
+};
 
 const DiscordBot = (configuration) => {
 	const client = new Discord.Client({});
@@ -30,17 +27,13 @@ const DiscordBot = (configuration) => {
 		discordBotkit.log('Logged in as %s - %s\n', client.user.username, client.user.id);
 	});
 
-	client.on('message', (message) => {
+	client.on('message', message => {
 		discordBotkit.handleMessageRecieve(message, discordBotkit);
 	});
 
-	// client.on('disconnect', (errMsg, code) => {
-	// 	const event = {
-	// 		message: errMsg,
-	// 		code
-	// 	};
-	// 	discordBotkit.trigger('disconnect', [discordBotkit, event]);
-	// });
+	client.on('disconnect', closeEvent => {
+		discordBotkit.trigger('disconnect', [discordBotkit, closeEvent]);
+	});
 
 	// client.on('presence', (user, userID, status, game, event) => {
 	// 	const presenceEvent = event.d;
