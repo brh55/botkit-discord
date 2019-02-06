@@ -18,7 +18,9 @@
   "license": "MIT",
   "dependencies": {
     "botkit": "^0.6.21",
-    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6"
+    "discord.js": "^11.4.2",
+    "erlpack": "github:hammerandchisel/erlpack",
+    "uws": "^99.0.0"
   },
   "devDependencies": {
     "ava": "^0.25.0",
