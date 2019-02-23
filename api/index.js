@@ -12,5 +12,3 @@ module.exports = (client) => ({
 	pinMessage: client.pinMessage,
 	deletePinnedMessage: client.deletePinnedMessage
 });
-
-

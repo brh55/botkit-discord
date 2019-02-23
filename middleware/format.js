@@ -1,4 +1,3 @@
-
 // Will format soon
 // Will add more formating options
 const format = (bot, message, platform_message) => {

@@ -18,8 +18,10 @@
   "license": "MIT",
   "dependencies": {
     "botkit": "^0.6.21",
+    "clone-deep": "^4.0.1",
     "discord.js": "^11.4.2",
     "erlpack": "github:hammerandchisel/erlpack",
+    "lodash.omit": "^4.5.0",
     "uws": "^99.0.0"
   },
   "devDependencies": {

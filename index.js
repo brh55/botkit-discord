@@ -1,12 +1,34 @@
 const Botkit = require('botkit');
 const Discord = require('discord.js');
+const omit = require('lodash.omit');
+const cloneDeep = require('clone-deep');
 
 const middleware = require('./middleware');
 const botDefinition = require('./bot');
 
 const newMessageHandler = (message, controller) => {
 	const bot = controller.spawn({});
-	controller.ingest(bot, message, {});
+	// var formattedMessage = message;
+	// // Remove specific websockets type to prevent clone issues from ingest
+	// if (message.mentions) {
+	// 	formattedMessage.mentions = omit(message.mentions, ['_client'])
+	// }
+
+	// const channel = message.channel;
+	// if (channel) {
+	// 	formattedMessage.channel.messages = channel.messages.map(m => {
+	// 		m.mentions = omit(m.mentions, ['_client']);
+	// 		return m;
+	// 	});
+	// }
+
+	// This will result in a double cloning,
+	// can be done different if performance is causing an issue
+	const source = {
+		raw: message
+	}
+
+	controller.ingest(bot, {}, source);
 };
 
 const DiscordBot = (configuration) => {
@@ -16,8 +38,10 @@ const DiscordBot = (configuration) => {
 	const discordBotkit = Botkit.core(configuration || {});
 	discordBotkit.defineBot(botDefinition);
 	discordBotkit.api = require('./api')(client);
+
 	// Attach Handlers and Middlewares
 	discordBotkit.handleMessageRecieve = newMessageHandler;
+	discordBotkit.middleware.ingest.use(middleware.ingest.handler);
 	discordBotkit.middleware.normalize.use(middleware.normalize.handler);
 	discordBotkit.middleware.categorize.use(middleware.categorize.handler);
 	discordBotkit.middleware.format.use(middleware.format.handler);
@@ -31,9 +55,9 @@ const DiscordBot = (configuration) => {
 		discordBotkit.handleMessageRecieve(message, discordBotkit);
 	});
 
-	client.on('disconnect', closeEvent => {
-		discordBotkit.trigger('disconnect', [discordBotkit, closeEvent]);
-	});
+	// client.on('disconnect', closeEvent => {
+	// 	discordBotkit.trigger('disconnect', [discordBotkit, closeEvent]);
+	// });
 
 	// client.on('presence', (user, userID, status, game, event) => {
 	// 	const presenceEvent = event.d;
@@ -41,7 +65,7 @@ const DiscordBot = (configuration) => {
 	// });
 
 	// client.on('guildMemberAdd', member => discordBotkit.trigger('guild_member_add', [discordBotkit, member]));
-	// client.on('guildMemberUpdate', (oldMember, newMember) => 
+	// client.on('guildMemberUpdate', (oldMember, newMember) =>
 	// 	discordBotkit.trigger('guild_member_update', [discordBotkit, { oldMember, newMember }]
 	// ));
 	// client.on('guildMemberRemove', member => discordBotkit.trigger('guild_member_remove', [discordBotkit, member]));
@@ -53,7 +77,7 @@ const DiscordBot = (configuration) => {
 	// client.on('channelCreate', channel => discordBotkit.trigger('guild_role_create', [discordBotkit, channel]));
 	// client.on('channelUpdate', (newChannel, oldChannel) => discordBotkit.trigger('guild_role_update', [discordBotkit, { newChannel, oldChannel }]));
 	// client.on('channelDelete', channel => discordBotkit.trigger('guild_role_delete', [discordBotkit, channel]))
-	
+
 	// Stay Alive Please
 	client.login(configuration.token);
 	discordBotkit.startTicking();
