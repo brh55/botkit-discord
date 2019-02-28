@@ -19,7 +19,7 @@ const categorize = (bot, message) => {
 
 	if (isMention(botId, message.text)) {
 		message.type = 'mention';
-		
+
 		if (isDirectMention(botId, message.text)) {
 			message.type = 'direct_mention';
 		}
@@ -29,7 +29,7 @@ const categorize = (bot, message) => {
 };
 
 module.exports.handler = (bot, message, next) => {
-	categorize(bot, message);	
+	categorize(bot, message);
 	next();
 };
 
