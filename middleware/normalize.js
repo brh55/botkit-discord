@@ -12,6 +12,7 @@ const processDefault = message => {
 	// All standard across both types
 	const raw = message.raw_message;
 
+	message.channel = raw.channel;
 	message.id = raw.id
 	message.lastMessageID = raw.channel.lastMessageID;
 	message.text = raw.content;
@@ -31,7 +32,6 @@ const processDefault = message => {
 const formatDirectMessage = message => {
 	const raw = message.raw_message;
 	message.type = raw.channel.type;
-	message.channel = raw.channel;
 	message.lastMessage = raw.channel.lastMessage;
 	message.user = raw.channel.recipient
 
