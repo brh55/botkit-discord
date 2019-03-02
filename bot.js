@@ -10,14 +10,22 @@ function botDefinition (botkit, configuration) {
 	const discordClient = botkit.config.client;
 
 	bot.send = (message, cb) => {
-		discordClient.sendMessage({
-			to: message.to,
-			message: message.text
-		}, cb);
+		if (typeof cb !== 'function') {
+			cb = (err, resp) => {
+				if (err) {
+					return botkit.debug('Message failed to send: ', err);
+				}
+
+				botkit.debug('Message successfully sent: ', resp);
+			}
+		}
+		message.channel.send(message.text)
+			.then(success => cb(null, success))
+		 	.catch(cb);
 	}
 
 	bot.reply = (src, resp, cb) => {
-		let message = {};
+		const message = {}
 		if (typeof(resp) == 'string') {
 			message.text = resp;
 		} else {
@@ -25,21 +33,22 @@ function botDefinition (botkit, configuration) {
 		}
 
 		switch(src.type) {
-				case 'direct_message':
-				case 'direct_mention':
-					// In these two cases, we reply directly to the Author with a Direct Message
-					message.to = src.author.id;
-					break;
-				case 'mention':
-				case 'ambient':
-					// If the bot was just mentioned or if it's a channel message, we reply in the channel
-					message.to = src.channelId;
-					break;
-				default:
-					message.to = src.channelId;
-			}
+			case 'direct_message':
+			case 'direct_mention':
+				// In these two cases, we reply directly to the Author with a Direct Message
+				message.to = src.user.id;
+				break;
+			case 'mention':
+			case 'ambient':
+				// If the bot was just mentioned or if it's a channel message, we reply in the channel
+				message.to = src.channel.id;
+				break;
+			default:
+				message.to = src.channel.id;
+		}
 
-		bot.say(message, cb);
+		src.response = message;
+		bot.say(src, cb);
 	}
 
 	bot.findConversation = function(message, cb) {
@@ -57,7 +66,6 @@ function botDefinition (botkit, configuration) {
 		}
 		cb();
 	};
-	
 
 	return bot;
 };

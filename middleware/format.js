@@ -1,8 +1,8 @@
 // Will format soon
 // Will add more formating options
 const format = (bot, message, platform_message) => {
-	platform_message.to = message.to;
-	platform_message.text = message.text;
+	platform_message.channel = message.channel;
+	platform_message.text = message.response.text;
 	return message;
 };
 

@@ -8,22 +8,6 @@ const botDefinition = require('./bot');
 
 const newMessageHandler = (message, controller) => {
 	const bot = controller.spawn({});
-	// var formattedMessage = message;
-	// // Remove specific websockets type to prevent clone issues from ingest
-	// if (message.mentions) {
-	// 	formattedMessage.mentions = omit(message.mentions, ['_client'])
-	// }
-
-	// const channel = message.channel;
-	// if (channel) {
-	// 	formattedMessage.channel.messages = channel.messages.map(m => {
-	// 		m.mentions = omit(m.mentions, ['_client']);
-	// 		return m;
-	// 	});
-	// }
-
-	// This will result in a double cloning,
-	// can be done different if performance is causing an issue
 	const source = {
 		raw: message
 	}
@@ -55,9 +39,9 @@ const DiscordBot = (configuration) => {
 		discordBotkit.handleMessageRecieve(message, discordBotkit);
 	});
 
-	// client.on('disconnect', closeEvent => {
-	// 	discordBotkit.trigger('disconnect', [discordBotkit, closeEvent]);
-	// });
+	client.on('disconnect', closeEvent => {
+		discordBotkit.trigger('disconnect', [discordBotkit, closeEvent]);
+	});
 
 	// client.on('presence', (user, userID, status, game, event) => {
 	// 	const presenceEvent = event.d;

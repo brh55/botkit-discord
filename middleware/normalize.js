@@ -14,7 +14,7 @@ const processDefault = message => {
 
 	message.id = raw.id
 	message.lastMessageID = raw.channel.lastMessageID;
-	message.content = raw.content;
+	message.text = raw.content;
 	message.mentions = raw.mentions;
 	message.createdTimestamp = raw.createdTimestamp;
 	message.editedTimestamp = raw.editedTimestamp;
@@ -54,7 +54,6 @@ const normalize = (bot, message) => {
 	// Message received
 	if (message.raw_message.type === 'DEFAULT') {
 		processDefault(message);
-		message.raw_message = {};
 	}
 
 	return message;
