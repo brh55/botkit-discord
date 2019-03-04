@@ -1,0 +1,87 @@
+{
+    "raw_message": {
+        "channel": {
+            "type": "dm",
+            "deleted": false,
+            "id": "dm-518588622123827211",
+            "name": "foobar",
+            "position": 1,
+            "parentID": "518194719562661890",
+            "permissionOverwrites": {},
+            "topic": null,
+			"nsfw": false,
+			"recipient": {
+				"id": "237437571875995648",
+				"username": "codingbyhim",
+				"discriminator": "5056",
+				"avatar": "ac52c36c75d6cfb32223bc884bc313f3",
+				"bot": false,
+				"lastMessageID": "550609729932623875",
+				"lastMessage": null
+			},
+            "lastMessageID": "550609729932623875",
+            "guild": {
+				"name": "foobar",
+				"id": "1234"
+			},
+            "messages": [],
+            "_typing": {},
+            "lastMessage": "sample"
+        },
+        "deleted": false,
+        "id": "550609729932623875",
+        "type": "DEFAULT",
+        "content": "this is an ambient message",
+        "author": {
+            "id": "237437571875995648",
+            "username": "codingbyhim",
+            "discriminator": "5056",
+            "avatar": "ac52c36c75d6cfb32223bc884bc313f3",
+            "bot": false,
+            "lastMessageID": "550609729932623875",
+            "lastMessage": null
+        },
+        "member": {
+            "guild": [],
+            "user": [],
+            "joinedTimestamp": 1543617648761,
+            "_roles": [],
+            "serverDeaf": false,
+            "serverMute": false,
+            "selfMute": "",
+            "selfDeaf": "",
+            "voiceSessionID": "",
+            "voiceChannelID": "",
+            "speaking": false,
+            "nickname": null,
+            "lastMessageID": "550609729932623875",
+            "lastMessage": null,
+            "deleted": false
+        },
+        "pinned": false,
+        "tts": false,
+        "nonce": "550609729383038976",
+        "system": false,
+        "embeds": [],
+        "attachments": {},
+        "createdTimestamp": 1551345989450,
+        "editedTimestamp": null,
+        "reactions": {},
+        "mentions": {
+            "everyone": false,
+            "users": {},
+            "roles": {},
+            "_content": "this is an ambient message",
+            "_client": [],
+            "_guild": [],
+            "_members": null,
+            "_channels": null
+        },
+        "webhookID": null,
+        "hit": null,
+        "_edits": []
+    },
+    "_pipeline": {
+        "stage": "normalize"
+    }
+}
