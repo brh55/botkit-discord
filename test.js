@@ -1,32 +1,62 @@
 import test from 'ava';
 
 const middlewares = require('./middleware');
-const mockNormalize = require('./mocks/normalize-message');
-const normalized = middlewares.normalize.exec({}, mockNormalize);
 
-test('Test normalization', t => {
-	t.is(normalized.author.username, 'brh55');
-	t.is(normalized.channelId, '518198744815108126');
-	t.is(normalized.text, 'Give me some mock data!');
+// These are standard properties that exist in all types
+const checkStandardProperties = (t, message) => {
+	t.is(message.text, 'this is an ambient message');
+	t.is(message.channel.name, 'foobar');
+}
+
+test('Normalization: Text Channel', t => {
+	const mockNormalize = require('./mocks/normalize-ambient');
+	const normalizedAmbient = middlewares.normalize.exec({}, mockNormalize);
+
+	t.is(normalizedAmbient.user.id, '237437571875995648');
+	t.is(normalizedAmbient.user.username, 'codingbyhim');
+	t.is(normalizedAmbient.type, 'text');
+	t.is(normalizedAmbient.guild.name, 'foobar');
+	t.is(normalizedAmbient.guild.id, "1234");
+
+	checkStandardProperties(t, normalizedAmbient);
+});
+
+test('Normalization: DM Channel', t => {
+	const mockNormalize = require('./mocks/normalize-dm');
+	const normalizedDM = middlewares.normalize.exec({}, mockNormalize);
+
+	t.is(normalizedDM.type, 'dm');
+	t.is(normalizedDM.lastMessage, 'sample');
+	t.is(normalizedDM.user.username, 'codingbyhim');
+
+	checkStandardProperties(t, normalizedDM);
 });
 
 test('Test categorization', t => {
+	const mockNormalize = require('./mocks/normalize-ambient');
+	const normalizedAmbient = middlewares.normalize.exec({}, mockNormalize);
+
 	const botStub = {
 		botkit: {
 			config: {
 				client: {
-					id: 123456
+					user: {
+						id: 123456
+					}
 				}
 			}
 		}
 	};
 
-	const ambientMessage = Object.assign({}, normalized);
+	const ambientMessage = Object.assign({}, normalizedAmbient);
 	ambientMessage.guildId = '123456';
 	const ambientMessageCategorize = middlewares.categorize.exec(botStub, ambientMessage);
 	t.is(ambientMessageCategorize.type, 'ambient');
 
-	const insertMessage = normalized;
+	// Format the normalized ambient message to meet direct_message criteria
+	const insertMessage = normalizedAmbient;
+	insertMessage.type = 'dm';
+	delete insertMessage.guildId;
 	const messageRecieved = middlewares.categorize.exec(botStub, insertMessage);
 	t.is(messageRecieved.type, 'direct_message');
 
