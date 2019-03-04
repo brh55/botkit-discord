@@ -1,4 +1,5 @@
 import test from 'ava';
+import { platform } from 'os';
 
 const middlewares = require('./middleware');
 
@@ -8,7 +9,7 @@ const checkStandardProperties = (t, message) => {
 	t.is(message.channel.name, 'foobar');
 }
 
-test('Normalization: Text Channel', t => {
+test('Normalize: Process Text Channel', t => {
 	const mockNormalize = require('./mocks/normalize-ambient');
 	const normalizedAmbient = middlewares.normalize.exec({}, mockNormalize);
 
@@ -21,7 +22,7 @@ test('Normalization: Text Channel', t => {
 	checkStandardProperties(t, normalizedAmbient);
 });
 
-test('Normalization: DM Channel', t => {
+test('Normalize: Process DM Channel', t => {
 	const mockNormalize = require('./mocks/normalize-dm');
 	const normalizedDM = middlewares.normalize.exec({}, mockNormalize);
 
@@ -32,7 +33,7 @@ test('Normalization: DM Channel', t => {
 	checkStandardProperties(t, normalizedDM);
 });
 
-test('Test categorization', t => {
+test('Categorize: Check Accurate Types', t => {
 	const mockNormalize = require('./mocks/normalize-ambient');
 	const normalizedAmbient = middlewares.normalize.exec({}, mockNormalize);
 
@@ -67,4 +68,16 @@ test('Test categorization', t => {
 	insertMessage.text = 'hello! <@123456>';
 	const mentionMessage = middlewares.categorize.exec(botStub, insertMessage);
 	t.is(mentionMessage.type, 'mention');
+});
+
+test('Format: Ensure Response Present', t => {
+	const mockNormalize = require('./mocks/normalize-ambient');
+	const normalizedAmbient = middlewares.normalize.exec({}, mockNormalize);
+	normalizedAmbient.response = {
+		text: "hello back"
+	};
+	const platformMessage = middlewares.format.exec({}, normalizedAmbient, {});
+
+	t.is(platformMessage.channel.id, '518588622123827211');
+	t.is(platformMessage.text, 'hello back');
 });
