@@ -1,5 +1,6 @@
 import test from 'ava';
 import { platform } from 'os';
+import Discord from 'discord.js';
 
 const middlewares = require('./middleware');
 
@@ -82,25 +83,15 @@ test('Format: Ensure Response Present', t => {
 	t.is(platformMessage.text, 'hello back');
 
 	const embedPlatformMessage = middlewares.format.exec({}, {
-		response: {
-			embed: {
-				author: 'test author'
-			}
-		}
+		response: new Discord.RichEmbed({
+			author: "test author"
+		})
 	}, {});
-	t.is(embedPlatformMessage.embed.author, 'test author')
+	t.is(embedPlatformMessage.options.author, 'test author')
 
-	const testFiles = [
-		{
-			attachment: 'entire/path/to/file.jpg',
-			name: 'file.jpg'
-		}
-	]
 
 	const attachPlatformMessage = middlewares.format.exec({}, {
-		response: {
-			files: testFiles
-		}
+		response: new Discord.Attachment('test.js', 'test123')
 	}, {});
-	t.deepEqual(attachPlatformMessage.files[0], testFiles[0])
+	t.deepEqual(attachPlatformMessage.options.file.attachment, 'test.js')
 });

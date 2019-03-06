@@ -25,6 +25,7 @@ const DiscordBot = (configuration) => {
 
 	// Pass along classes
 	discordBotkit.RichEmbed = Discord.RichEmbed;
+	discordBotkit.Attachment = Discord.Attachment;
 
 	// Attach Handlers and Middlewares
 	discordBotkit.handleMessageRecieve = newMessageHandler;

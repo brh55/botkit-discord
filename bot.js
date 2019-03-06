@@ -17,8 +17,9 @@ function botDefinition (botkit, configuration) {
 				botkit.debug('Message successfully sent: ', resp);
 			}
 		}
-		const messageOptions = message.embed || message.attachment || message.options;
-		message.channel.send(message.text, messageOptions)
+
+		console.log(message)
+		message.channel.send(message.text, message.options)
 			.then(success => cb(null, success))
 		 	.catch(cb);
 	}
