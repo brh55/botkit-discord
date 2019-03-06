@@ -7,8 +7,6 @@ function botDefinition (botkit, configuration) {
 		utterance: botkit.utterance
 	}
 
-	const discordClient = botkit.config.client;
-
 	bot.send = (message, cb) => {
 		if (typeof cb !== 'function') {
 			cb = (err, resp) => {
@@ -19,20 +17,20 @@ function botDefinition (botkit, configuration) {
 				botkit.debug('Message successfully sent: ', resp);
 			}
 		}
-		message.channel.send(message.text)
+		const messageOptions = message.embed || message.attachment || message.options;
+		message.channel.send(message.text, messageOptions)
 			.then(success => cb(null, success))
 		 	.catch(cb);
 	}
 
 	bot.reply = (src, resp, cb) => {
-		const message = {}
+		const message = resp;
 		if (typeof(resp) == 'string') {
-			message.text = resp;
-		} else {
-			message = resp;
+			message.text = Object.assign({}, resp);
 		}
 
 		src.response = message;
+		// sends to format middle before sent
 		bot.say(src, cb);
 	}
 

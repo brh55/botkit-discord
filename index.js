@@ -23,6 +23,9 @@ const DiscordBot = (configuration) => {
 	discordBotkit.defineBot(botDefinition);
 	discordBotkit.api = require('./api')(client);
 
+	// Pass along classes
+	discordBotkit.RichEmbed = Discord.RichEmbed;
+
 	// Attach Handlers and Middlewares
 	discordBotkit.handleMessageRecieve = newMessageHandler;
 	discordBotkit.middleware.ingest.use(middleware.ingest.handler);

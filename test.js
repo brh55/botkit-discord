@@ -80,4 +80,27 @@ test('Format: Ensure Response Present', t => {
 
 	t.is(platformMessage.channel.id, '518588622123827211');
 	t.is(platformMessage.text, 'hello back');
+
+	const embedPlatformMessage = middlewares.format.exec({}, {
+		response: {
+			embed: {
+				author: 'test author'
+			}
+		}
+	}, {});
+	t.is(embedPlatformMessage.embed.author, 'test author')
+
+	const testFiles = [
+		{
+			attachment: 'entire/path/to/file.jpg',
+			name: 'file.jpg'
+		}
+	]
+
+	const attachPlatformMessage = middlewares.format.exec({}, {
+		response: {
+			files: testFiles
+		}
+	}, {});
+	t.deepEqual(attachPlatformMessage.files[0], testFiles[0])
 });
