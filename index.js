@@ -1,7 +1,5 @@
 const Botkit = require('botkit');
 const Discord = require('discord.js');
-const omit = require('lodash.omit');
-const cloneDeep = require('clone-deep');
 
 const middleware = require('./middleware');
 const botDefinition = require('./bot');
@@ -21,7 +19,6 @@ const DiscordBot = (configuration) => {
 
 	const discordBotkit = Botkit.core(configuration || {});
 	discordBotkit.defineBot(botDefinition);
-	discordBotkit.api = require('./api')(client);
 
 	// Pass along classes
 	discordBotkit.RichEmbed = Discord.RichEmbed;
@@ -33,13 +30,15 @@ const DiscordBot = (configuration) => {
 	discordBotkit.middleware.normalize.use(middleware.normalize.handler);
 	discordBotkit.middleware.categorize.use(middleware.categorize.handler);
 	discordBotkit.middleware.format.use(middleware.format.handler);
+	discordBotkit.middleware.receive.use(middleware.receive.handler);
 
 	client.on('ready', () => {
 		discordBotkit.trigger('ready', [discordBotkit, client.user])
 		discordBotkit.log('Logged in as %s - %s\n', client.user.username, client.user.id);
 	});
 
-	client.on('message', message => {
+	client.on('message', async message => {
+		discordBotkit.debug(`Received ${message}`);
 		discordBotkit.handleMessageRecieve(message, discordBotkit);
 	});
 

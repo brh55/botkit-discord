@@ -18,7 +18,6 @@ function botDefinition (botkit, configuration) {
 			}
 		}
 
-		console.log(message)
 		message.channel.send(message.text, message.options)
 			.then(success => cb(null, success))
 		 	.catch(cb);

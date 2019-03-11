@@ -71,7 +71,7 @@ test('Categorize: Check Accurate Types', t => {
 	t.is(mentionMessage.type, 'mention');
 });
 
-test('Format: Ensure Response Present', t => {
+test('Format: Correct Attachments, Embeds, and Responses', t => {
 	const mockNormalize = require('./mocks/normalize-ambient');
 	const normalizedAmbient = middlewares.normalize.exec({}, mockNormalize);
 	normalizedAmbient.response = {
@@ -94,4 +94,26 @@ test('Format: Ensure Response Present', t => {
 		response: new Discord.Attachment('test.js', 'test123')
 	}, {});
 	t.deepEqual(attachPlatformMessage.options.file.attachment, 'test.js')
+});
+
+test('Recieve: Attach relevant API methods', t => {
+	const stubBot = {};
+	const stubNext = () => {};
+	middlewares.receive.handler(stubBot, {
+		member: {
+			voiceChannel: {
+				join: () => {},
+				leave: () => {}
+			}
+		}
+	}, stubNext);
+	t.is(typeof stubBot.api.joinVoiceChannel, 'function');
+	t.is(typeof stubBot.api.leaveVoiceChannel, 'function');
+
+	// Test to make sure that direct_messages don't have voice helpers
+	middlewares.receive.handler(stubBot, {
+		type: 'direct_message'
+	}, stubNext);
+	t.is(typeof stubBot.api.joinVoiceChannel, 'undefined');
+	t.is(typeof stubBot.api.leaveVoiceChannel, 'undefined');
 });

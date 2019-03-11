@@ -13,6 +13,7 @@ const processDefault = message => {
 	const raw = message.raw_message;
 
 	message.channel = raw.channel;
+	message.member = raw.member;
 	message.id = raw.id
 	message.lastMessageID = raw.channel.lastMessageID;
 	message.text = raw.content;
