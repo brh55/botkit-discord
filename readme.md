@@ -1,15 +1,21 @@
 # botkit-discord
 
-> 🤖👾 A Botkit connector for Discord
+> 🤖👾 A Botkit connector for Discord with support for text, voice, attachments, embedded messages, and more.
 
-This Botkit connector would not be possible without the powerful and simple library, [izy521/discord.io](https://github.com/izy521/discord.io). 
+This Botkit platform connector is intended to be used for Discord. Underneath the hood, this connector is utilizing [discord.js](https://github.com/discordjs/discord.js). Currently the connector supports the following features:
 
-> Note this is still a work in progress and open to additional features and suggestions
+- **Text:** DM Channel, Group DM Channel, Guild Text Message
+- **Voice:** Audio Playback and Joining Audio Channels
+- **Embedded Messages:** visually rich messages
+- File attachments
+- **Various Notifications:** Presences, Guild Member Add/Remove/Update, Guild Role Changes, Channel Add/Delete/Create
 
 ![Example Image](https://user-images.githubusercontent.com/6020066/49334369-4151ba80-f589-11e8-8b8a-0086bcd956a2.png)
 
-## Usage
+## Install
+`$ npm install botkit-discord`
 
+## Basic Usage
 ```javascript
 const BotkitDiscord = require('botkit-discord');
 const config = {
@@ -26,6 +32,45 @@ discordBot.hears('.*', 'direct_mention', (bot, message) => {
 	bot.reply(message, 'leave me to be please.');
 });
 ```
+
+## Advance Usage
+```javascript
+const BotkitDiscord = require('botkit-discord');
+const config = {
+    token: '**' // Discord bot token
+}
+
+// Let's join the user's voice channel if we recieve a "b!play"
+// play a song and leave, get rating from user, and save result
+// if no rating is stored, we can end convoersation
+discordBot.hears('b!play', 'ambient', (bot, message) => {
+	bot.api.joinVoiceChannel().then(connection => {
+		dispatcher = connection.play('./music/funny.mp3')
+		dispatcher.setVolume(0.5)
+		dispatcher.on('finish', () => {
+			bot.createConversation(message, (err, convo) => {
+				convo.addQuestion('How would rate that from a scale of 0 to 5?', (response, convo) => {
+					const numberRating = response.text.match(/[0-5]/g);
+					if (nummberRating.length < 1) {
+						convo.say('Uhh... not a valid rating, try again later!');
+						convo.next();
+					}
+					convo.say('Oh wow! Thanks for letting me know!');
+					db.save(message.member.id, numberRating[0]);
+					convo.next();
+				});
+			});
+		})
+		bot.api.leaveVoiceChannel();
+	}).catch(err => {
+		// If the user is not in a voice channel, tell them to join one
+		bot.reply('Dude, you\'ll need to join a voice channel and try again');
+	});
+});
+```
+### Example Projects
+- [Magic-8 Ball](https://github.com/brh55/discord-magic-8-ball)
+- More to come...
 
 Refer to [Botkit documentation](https://botkit.ai/docs/) to utilize all of the other Botkit features.
 
@@ -83,7 +128,7 @@ For convenience the following methods from discord.io library is available on th
 - getMessages
 - editMessage
 - deleteMessage
-- pinMessage 
+- pinMessage
 - deletePinnedMessage
 
 ## License
@@ -91,3 +136,6 @@ For convenience the following methods from discord.io library is available on th
 Ⓒ MIT ([Brandon Him / brh55](github.com/@brh55))
 
 Please let me know if you plan on forking or would like professional support.
+
+This wouldn't be possible without all the tremendous effort and contributors behind[discord.js](https://github.com/discordjs/iscord.js).
+
