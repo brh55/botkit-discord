@@ -75,9 +75,9 @@ discordBot.hears('b!play', 'ambient', (bot, message) => {
 Refer to [Botkit documentation](https://botkit.ai/docs/) to utilize all of the other Botkit features.
 
 ## Events
-You can handle particular events for your bot using the `.on()` method.
+When you want your bot to respond to particular events that may be relevant, you can use the `.on` method.
 
-```js
+```javascript
 discordBot.on(EVENT_NAME, event => {
 	// do stuff
 });
@@ -117,7 +117,7 @@ discordBot.on(EVENT_NAME, event => {
 
 ## API
 
-For convenience the following methods from discord.io library is available on the `controller.api`
+For convenience the following methods from discord.js ibrary is available on the `controller.api`
 
 - setPresence
 - editUserInfo
@@ -130,6 +130,16 @@ For convenience the following methods from discord.io library is available on th
 - deleteMessage
 - pinMessage
 - deletePinnedMessage
+
+## Bot Schema
+
+## Text Channel
+
+## Voice Channel
+
+## Embeds
+
+## Atachments
 
 ## License
 
