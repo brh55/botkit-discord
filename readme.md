@@ -200,8 +200,6 @@ discordBot.hears('!file', ['direct_message', 'ambient'], (bot, message) => {
 });
 ```
 
-
-```
 ## License
 
 Ⓒ MIT ([Brandon Him / brh55](github.com/@brh55))
