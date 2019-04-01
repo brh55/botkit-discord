@@ -7,39 +7,31 @@ function botDefinition (botkit, configuration) {
 		utterance: botkit.utterance
 	}
 
-	const discordClient = botkit.config.client;
-
 	bot.send = (message, cb) => {
-		discordClient.sendMessage({
-			to: message.to,
-			message: message.text
-		}, cb);
+		if (typeof cb !== 'function') {
+			cb = (err, resp) => {
+				if (err) {
+					return botkit.debug('Message failed to send: ', err);
+				}
+
+				botkit.debug('Message successfully sent: ', resp);
+			}
+		}
+
+		message.channel.send(message.text, message.options)
+			.then(success => cb(null, success))
+		 	.catch(cb);
 	}
 
 	bot.reply = (src, resp, cb) => {
-		let message = {};
+		const message = resp;
 		if (typeof(resp) == 'string') {
-			message.text = resp;
-		} else {
-			message = resp;
+			message.text = Object.assign({}, resp);
 		}
 
-		switch(src.type) {
-				case 'direct_message':
-				case 'direct_mention':
-					// In these two cases, we reply directly to the Author with a Direct Message
-					message.to = src.author.id;
-					break;
-				case 'mention':
-				case 'ambient':
-					// If the bot was just mentioned or if it's a channel message, we reply in the channel
-					message.to = src.channelId;
-					break;
-				default:
-					message.to = src.channelId;
-			}
-
-		bot.say(message, cb);
+		src.response = message;
+		// sends to format middle before sent
+		bot.say(src, cb);
 	}
 
 	bot.findConversation = function(message, cb) {
@@ -57,7 +49,6 @@ function botDefinition (botkit, configuration) {
 		}
 		cb();
 	};
-	
 
 	return bot;
 };

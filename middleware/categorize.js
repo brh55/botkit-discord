@@ -1,25 +1,26 @@
 const isMention = (id, messageText) => messageText.indexOf(id) !== -1;
 const isDirectMention = (id, messageText) => messageText.indexOf(id) === 2;
 
-// can rename to something logical
+// Recategorize
 const categorize = (bot, message) => {
-	const botId = bot.botkit.config.client.id;
+	const botId = bot.botkit.config.client.user.id;
 
-	if (message.raw_message.event.t == 'MESSAGE_CREATE' && message.guildId) {
+	if (message.type == 'text'
+		&& message.guildId) {
 		message.type = 'ambient';
 	}
 
 	if (
-		message.raw_message.event.t == 'MESSAGE_CREATE' &&
+		message.type === 'dm' &&
 		!message.guildId &&
-		message.author.id !== botId
+		message.user.id !== botId
 	) {
 		message.type = 'direct_message';
 	}
 
 	if (isMention(botId, message.text)) {
 		message.type = 'mention';
-		
+
 		if (isDirectMention(botId, message.text)) {
 			message.type = 'direct_mention';
 		}
@@ -29,7 +30,7 @@ const categorize = (bot, message) => {
 };
 
 module.exports.handler = (bot, message, next) => {
-	categorize(bot, message);	
+	categorize(bot, message);
 	next();
 };
 

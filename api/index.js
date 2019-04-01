@@ -1,16 +1,32 @@
-// May just copy over client methods
-module.exports = (client) => ({
-	setPresence: client.setPresence,
-	editUserInfo: client.editUserInfo,
-	getAllUsers: client.getAllUsers,
-	fixMessage: client.fixMessage,
-	simulateTyping: client.simulateTyping,
-	getMessage: client.getMessage,
-	getMessages: client.getMessages,
-	editMessage: client.editMessage,
-	deleteMessage: client.deleteMessage,
-	pinMessage: client.pinMessage,
-	deletePinnedMessage: client.deletePinnedMessage
-});
+const joinVoiceChannel = (message) => async () => {
+	if (!message.member.voiceChannel)
+		throw Error('User is not in a voice channel');
 
+	try {
+		const connection = await message.member.voiceChannel.join();
+		return connection;
+	} catch (error) {
+		throw Error(error);
+	}
+};
 
+const leaveVoiceChannel = (message) => () => {
+	const voiceChannel = message.member.voiceChannel;
+	if (voiceChannel) {
+		voiceChannel.leave();
+	}
+};
+
+module.exports = (bot, message) => {
+	// Direct message related APIs
+	if (message.type === 'direct_message') {
+		return {
+		}
+	}
+
+	// Guild message types API (mentions, ambient)
+	return {
+		joinVoiceChannel: joinVoiceChannel(message),
+		leaveVoiceChannel: leaveVoiceChannel(message)
+	}
+}

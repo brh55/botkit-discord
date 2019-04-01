@@ -1,15 +1,21 @@
 # botkit-discord
 
-> 🤖👾 A Botkit connector for Discord
+> 🤖👾 A Botkit connector for Discord with support for text, voice, attachments, embedded messages, and more.
 
-This Botkit connector would not be possible without the powerful and simple library, [izy521/discord.io](https://github.com/izy521/discord.io). 
+This Botkit platform connector is intended to be used for Discord. Underneath the hood, this connector is utilizing [discord.js](https://github.com/discordjs/discord.js). Currently the connector supports the following features:
 
-> Note this is still a work in progress and open to additional features and suggestions
+- **Text:** DM Channel, Group DM Channel, Guild Text Message
+- **Voice:** Audio Playback and Joining Audio Channels
+- **Embedded Messages:** Visually rich messages
+- **File attachments:** Attach files to be downloaded by receiver
+- **Various Notifications:** Presences, Guild Member Add/Remove/Update, Guild Role Changes, Channel Add/Delete/Create
 
 ![Example Image](https://user-images.githubusercontent.com/6020066/49334369-4151ba80-f589-11e8-8b8a-0086bcd956a2.png)
 
-## Usage
+## Install
+`$ npm install botkit-discord`
 
+## Basic Usage
 ```javascript
 const BotkitDiscord = require('botkit-discord');
 const config = {
@@ -27,12 +33,51 @@ discordBot.hears('.*', 'direct_mention', (bot, message) => {
 });
 ```
 
+## Advance Usage
+```javascript
+const BotkitDiscord = require('botkit-discord');
+const config = {
+    token: '**' // Discord bot token
+}
+
+// Let's join the user's voice channel if we recieve a "b!play"
+// play a song and leave, get rating from user, and save result
+// if no rating is stored, we can end convoersation
+discordBot.hears('b!play', 'ambient', (bot, message) => {
+	bot.api.joinVoiceChannel().then(connection => {
+		dispatcher = connection.play('./music/funny.mp3')
+		dispatcher.setVolume(0.5)
+		dispatcher.on('finish', () => {
+			bot.createConversation(message, (err, convo) => {
+				convo.addQuestion('How would rate that from a scale of 0 to 5?', (response, convo) => {
+					const numberRating = response.text.match(/[0-5]/g);
+					if (nummberRating.length < 1) {
+						convo.say('Uhh... not a valid rating, try again later!');
+						convo.next();
+					}
+					convo.say('Oh wow! Thanks for letting me know!');
+					db.save(message.member.id, numberRating[0]);
+					convo.next();
+				});
+			});
+		})
+		bot.api.leaveVoiceChannel();
+	}).catch(err => {
+		// If the user is not in a voice channel, tell them to join one
+		bot.reply('Dude, you\'ll need to join a voice channel and try again');
+	});
+});
+```
+### Example Projects
+- [Magic-8 Ball](https://github.com/brh55/discord-magic-8-ball)
+- More to come...
+
 Refer to [Botkit documentation](https://botkit.ai/docs/) to utilize all of the other Botkit features.
 
 ## Events
-You can handle particular events for your bot using the `.on()` method.
+When you want your bot to respond to particular events that may be relevant, you can use the `.on` method.
 
-```js
+```javascript
 discordBot.on(EVENT_NAME, event => {
 	// do stuff
 });
@@ -54,40 +99,114 @@ discordBot.on(EVENT_NAME, event => {
 | disconnect | Bot has disconnected or failed to login |
 | ready      | Bot is connected                        |
 
-### Guild Events
+### Discord.js Events
 
-> Guilds can also be referred to "server"
+Along with standard events, all Discord.js events have been migrated for your use. Please refer to the [docs](https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=e-channelCreate) for usage.
 
-| Event               | Description                                                  |
-| ------------------- | ------------------------------------------------------------ |
-| guild_member_add    | A member added to guild (server)                             |
-| guild_member_update | An existing guild member has bene updated                    |
-| guild_member_remove | A member removed from guild                                  |
-| guild_role_create   | A new [guild role](https://discordapp.com/developers/docs/topics/permissions#role-object) created |
-| guild_role_update   | An existing guild role has been updated                      |
-| guild_role_delete   | A guild role deleted                                         |
-| channel_create      | A channel has been create                                    |
-| channel_update      | An existing channel has been updated                         |
-| channel_delete      | A channel has been deleted                                   |
+Server Greeting Referenced in [Docs](https://github.com/discordjs/discord.js/blob/stable/docs/examples/greeting.js)
+
+```js
+discordBot.on('guildMemberAdd', member => {
+  const channel = member.guild.channels.find(ch => ch.name === 'member-log');
+  if (!channel) return;
+  channel.send(`Welcome to the server, ${member}`);
+});
+```
+
+- "channelCreate"
+- "channelDelete"
+- "channelPinsUpdate"
+- "channelUpdate"
+- "clientUserGuildSettingsUpdate"
+- "clientUserSettingsUpdate"
+- "debug"
+- "disconnect"
+- "emojiCreate"
+- "emojiDelete"
+- "emojiUpdate"
+- "error"
+- "guildBanAdd"
+- "guildBanRemove"
+- "guildCreate"
+- "guildDelete"
+- "guildMemberAdd"
+- "guildMemberAvailable"
+- "guildMemberRemove"
+- "guildMembersChunk"
+- "guildMemberSpeaking"
+- "guildMemberUpdate"
+- "guildUnavailable"
+- "guildUpdate"
+- "message"
+- "messageDelete"
+- "messageDeleteBulk"
+- "messageReactionAdd"
+- "messageReactionRemove"
+- "messageReactionRemoveAll"
+- "messageUpdate"
+- "presenceUpdate"
+- "rateLimit"
+- "ready"
+- "reconnecting"
+- "resume"
+- "roleCreate"
+- "roleDelete"
+- "roleUpdate"
+- "typingStart"
+- "typingStop"
+- "userNoteUpdate"
+- "userUpdate"
+- "voiceStateUpdate"
+- "warn"
 
 ## API
 
-For convenience the following methods from discord.io library is available on the `controller.api`
+For convenience the following methods from discord.js ibrary is available on the `controller.api` during specific contexts
 
-- setPresence
-- editUserInfo
-- getAllUsers
-- fixMessage
-- simulateTyping
-- getMessage
-- getMessages
-- editMessage
-- deleteMessage
-- pinMessage 
-- deletePinnedMessage
+- joinVoiceChannel
+- leaveVoiceChannel
 
+## Embeds
+To use embeds, it's preferred to use the Discord.js RichEmbed builder, `discordBot.RichEmbed()`.
+
+![image](https://user-images.githubusercontent.com/6020066/55299068-0dc35780-53e6-11e9-9828-8676119e56a7.png)
+
+
+```js
+discordBot.hears('!rpg', ['direct_message', 'ambient'], (bot, message) => {
+	const embed = new discordBot.RichEmbed()
+	embed.setAuthor(
+		"Quick RPG Stats",
+		"https://rpglink.com/icon/here"
+	);
+
+	embed.addField("Power Level 👊", "Equivalent to a Goblin Archer 🏹");
+	embed.addField("Skills Acquired 🥕", "🏹 Archery, 🍳 Cooking");
+	embed.setColor('GREEN');
+	bot.reply(message, embed)
+});
+
+```
+
+## Atachments
+It's recommended to use the attachment helper, `discordBot.Attachment`:
+
+![image](https://user-images.githubusercontent.com/6020066/55299122-4fec9900-53e6-11e9-9f8c-f4d235ff15a7.png)
+
+```js
+discordBot.hears('!file', ['direct_message', 'ambient'], (bot, message) => {
+	const attachment = new discordBot.Attachment('./temp.js', "Awesome Script!")
+	bot.reply(message, attachment)
+});
+```
+
+
+```
 ## License
 
 Ⓒ MIT ([Brandon Him / brh55](github.com/@brh55))
 
 Please let me know if you plan on forking or would like professional support.
+
+This wouldn't be possible without all the tremendous effort and contributors behind[discord.js](https://github.com/discordjs/iscord.js).
+

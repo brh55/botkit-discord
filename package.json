@@ -1,7 +1,7 @@
 {
   "name": "botkit-discord",
-  "version": "0.0.9",
-  "description": "A Botkit connector for Discord allowing you to create extensible Discord bots.",
+  "version": "0.1.0",
+  "description": "A Botkit connector for Discord with support for text, voice, attachments, embedded messages, and more.",
   "main": "index.js",
   "scripts": {
     "test": "ava"
@@ -12,13 +12,20 @@
     "discord",
     "discord bots",
     "discord javascript",
-    "discord chatbots"
+    "discord chatbots",
+    "discord.js"
   ],
   "author": "Brandon Him",
   "license": "MIT",
   "dependencies": {
     "botkit": "^0.6.21",
-    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6"
+    "clone-deep": "^4.0.1",
+    "discord.js": "^11.4.2",
+    "erlpack": "github:hammerandchisel/erlpack",
+    "ffmpeg-binaries": "^4.0.0",
+    "lodash.omit": "^4.5.0",
+    "opusscript": "0.0.6",
+    "uws": "^99.0.0"
   },
   "devDependencies": {
     "ava": "^0.25.0",
