@@ -1,10 +1,13 @@
-// Will format soon
-// Will add more formating options
 const format = (bot, message, platform_message) => {
 	platform_message.channel = message.channel;
-	platform_message.text = message.response.text;
+	// If reply is just a plain "string"
+	if (typeof message.response === 'string') {
+		platform_message.text = message.response;
+		return platform_message;
+	}
+
 	// Accepted responses
-	platform_message.options = message.response;
+	platform_message.options = message.response || {};
 	return platform_message;
 };
 

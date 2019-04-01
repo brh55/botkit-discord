@@ -20,8 +20,7 @@ const leaveVoiceChannel = (message) => () => {
 module.exports = (bot, message) => {
 	// Direct message related APIs
 	if (message.type === 'direct_message') {
-		return {
-		}
+		return {}
 	}
 
 	// Guild message types API (mentions, ambient)
