@@ -10,7 +10,7 @@ This Botkit platform connector is intended to be used for Discord. Underneath th
 - **File attachments:** Attach files to be downloaded by receiver
 - **Various Notifications:** Presences, Guild Member Add/Remove/Update, Guild Role Changes, Channel Add/Delete/Create
 
-![Example Image](https://user-images.githubusercontent.com/6020066/49334369-4151ba80-f589-11e8-8b8a-0086bcd956a2.png)
+![Example Gif](http://g.recordit.co/WzQ3XkJm5A.gif)
 
 ## Install
 `$ npm install botkit-discord`
