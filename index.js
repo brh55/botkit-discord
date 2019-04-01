@@ -1,6 +1,6 @@
 const Botkit = require('botkit');
 const Discord = require('discord.js');
-
+const discordEvents = require('./discord-events');
 const middleware = require('./middleware');
 const botDefinition = require('./bot');
 
@@ -42,28 +42,19 @@ const DiscordBot = (configuration) => {
 		discordBotkit.handleMessageRecieve(message, discordBotkit);
 	});
 
-	client.on('disconnect', closeEvent => {
-		discordBotkit.trigger('disconnect', [discordBotkit, closeEvent]);
+	// Set up triggers for remaining events
+	discordEvents.map(event => {
+		client.on(event, (...params) => {
+			discordBotkit.trigger(event, [discordBotkit, params]);
+		});
 	});
 
-	// client.on('presence', (user, userID, status, game, event) => {
-	// 	const presenceEvent = event.d;
-	// 	discordBotkit.trigger('presence', [discordBotkit, event]);
-	// });
-
-	// client.on('guildMemberAdd', member => discordBotkit.trigger('guild_member_add', [discordBotkit, member]));
-	// client.on('guildMemberUpdate', (oldMember, newMember) =>
-	// 	discordBotkit.trigger('guild_member_update', [discordBotkit, { oldMember, newMember }]
-	// ));
-	// client.on('guildMemberRemove', member => discordBotkit.trigger('guild_member_remove', [discordBotkit, member]));
-
-	// client.on('guildRoleCreate', role => discordBotkit.trigger('guild_role_create', [discordBotkit, role]));
-	// client.on('guildRoleUpdate', (oldRole, newRole) => discordBotkit.trigger('guild_role_update', [discordBotkit, { oldRole, newRole }]));
-	// client.on('guildRoleDelete', role => discordBotkit.trigger('guild_role_delete', [discordBotkit, role]));
-
-	// client.on('channelCreate', channel => discordBotkit.trigger('guild_role_create', [discordBotkit, channel]));
-	// client.on('channelUpdate', (newChannel, oldChannel) => discordBotkit.trigger('guild_role_update', [discordBotkit, { newChannel, oldChannel }]));
-	// client.on('channelDelete', channel => discordBotkit.trigger('guild_role_delete', [discordBotkit, channel]))
+	if (configuration.debug) {
+		client.on('debug', info => {
+			discordBotkit.debug(info);
+			discordBotkit.trigger('debug', [discordBotkit, info]);
+		});
+	}
 
 	// Stay Alive Please
 	client.login(configuration.token);
