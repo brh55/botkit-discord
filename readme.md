@@ -29,7 +29,7 @@ discordBot.hears('hello','direct_message',(bot, message) => {
 });
 
 discordBot.hears('.*', 'direct_mention', (bot, message) => {
-	bot.reply(message, 'leave me to be please.');
+    bot.reply(message, 'leave me to be please.');
 });
 ```
 
@@ -51,7 +51,7 @@ discordBot.hears('b!play', 'ambient', (bot, message) => {
 			bot.createConversation(message, (err, convo) => {
 				convo.addQuestion('How would rate that from a scale of 0 to 5?', (response, convo) => {
 					const numberRating = response.text.match(/[0-5]/g);
-					if (nummberRating.length < 1) {
+					if (numberRating.length < 1) {
 						convo.say('Uhh... not a valid rating, try again later!');
 						convo.next();
 					}
@@ -202,9 +202,9 @@ discordBot.hears('!file', ['direct_message', 'ambient'], (bot, message) => {
 
 ## License
 
-Ⓒ MIT ([Brandon Him / brh55](github.com/@brh55))
+Ⓒ MIT [Brandon Him / brh55](http://github.com/brh55)
 
-Please let me know if you plan on forking or would like professional support.
+Please let me know if you plan on forking or would like professional support. Open-source is a hobby, but it would be great as a full-time gig :)
 
-This wouldn't be possible without all the tremendous effort and contributors behind[discord.js](https://github.com/discordjs/discord.js).
+This wouldn't be possible without all the tremendous effort and contributors behind [discord.js](https://github.com/discordjs/discord.js).
 
