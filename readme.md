@@ -6,7 +6,7 @@ This Botkit platform connector is intended to be used for Discord. Underneath th
 
 - **Text:** DM Channel, Group DM Channel, Guild Text Message
 - **Voice:** Audio Playback and Joining Audio Channels
-- **Embedded Messages:** visually rich messages
+- **Embedded Messages:** Visually rich messages
 - File attachments
 - **Various Notifications:** Presences, Guild Member Add/Remove/Update, Guild Role Changes, Channel Add/Delete/Create
 
@@ -99,48 +99,109 @@ discordBot.on(EVENT_NAME, event => {
 | disconnect | Bot has disconnected or failed to login |
 | ready      | Bot is connected                        |
 
-### Guild Events
+### Discord.js Events
 
-> Guilds can also be referred to "server"
+Along with standard events, all Discord.js events have been migrated for your use. Please refer to the [docs](https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=e-channelCreate) for usage.
 
-| Event               | Description                                                  |
-| ------------------- | ------------------------------------------------------------ |
-| guild_member_add    | A member added to guild (server)                             |
-| guild_member_update | An existing guild member has bene updated                    |
-| guild_member_remove | A member removed from guild                                  |
-| guild_role_create   | A new [guild role](https://discordapp.com/developers/docs/topics/permissions#role-object) created |
-| guild_role_update   | An existing guild role has been updated                      |
-| guild_role_delete   | A guild role deleted                                         |
-| channel_create      | A channel has been create                                    |
-| channel_update      | An existing channel has been updated                         |
-| channel_delete      | A channel has been deleted                                   |
+Server Greeting Referenced in [Docs](https://github.com/discordjs/discord.js/blob/stable/docs/examples/greeting.js)
+
+```js
+discordBot.on('guildMemberAdd', member => {
+  const channel = member.guild.channels.find(ch => ch.name === 'member-log');
+  if (!channel) return;
+  channel.send(`Welcome to the server, ${member}`);
+});
+```
+
+- "channelCreate"
+- "channelDelete"
+- "channelPinsUpdate"
+- "channelUpdate"
+- "clientUserGuildSettingsUpdate"
+- "clientUserSettingsUpdate"
+- "debug"
+- "disconnect"
+- "emojiCreate"
+- "emojiDelete"
+- "emojiUpdate"
+- "error"
+- "guildBanAdd"
+- "guildBanRemove"
+- "guildCreate"
+- "guildDelete"
+- "guildMemberAdd"
+- "guildMemberAvailable"
+- "guildMemberRemove"
+- "guildMembersChunk"
+- "guildMemberSpeaking"
+- "guildMemberUpdate"
+- "guildUnavailable"
+- "guildUpdate"
+- "message"
+- "messageDelete"
+- "messageDeleteBulk"
+- "messageReactionAdd"
+- "messageReactionRemove"
+- "messageReactionRemoveAll"
+- "messageUpdate"
+- "presenceUpdate"
+- "rateLimit"
+- "ready"
+- "reconnecting"
+- "resume"
+- "roleCreate"
+- "roleDelete"
+- "roleUpdate"
+- "typingStart"
+- "typingStop"
+- "userNoteUpdate"
+- "userUpdate"
+- "voiceStateUpdate"
+- "warn"
 
 ## API
 
-For convenience the following methods from discord.js ibrary is available on the `controller.api`
+For convenience the following methods from discord.js ibrary is available on the `controller.api` during specific contexts
 
-- setPresence
-- editUserInfo
-- getAllUsers
-- fixMessage
-- simulateTyping
-- getMessage
-- getMessages
-- editMessage
-- deleteMessage
-- pinMessage
-- deletePinnedMessage
-
-## Bot Schema
-
-## Text Channel
-
-## Voice Channel
+- joinVoiceChannel
+- leaveVoiceChannel
 
 ## Embeds
+To use embeds, it's preferred to use the Discord.js RichEmbed builder, `discordBot.RichEmbed()`.
+
+![image](https://user-images.githubusercontent.com/6020066/55299068-0dc35780-53e6-11e9-9828-8676119e56a7.png)
+
+
+```js
+discordBot.hears('!rpg', ['direct_message', 'ambient'], (bot, message) => {
+	const embed = new discordBot.RichEmbed()
+	embed.setAuthor(
+		"Quick RPG Stats",
+		"https://rpglink.com/icon/here"
+	);
+
+	embed.addField("Power Level 👊", "Equivalent to a Goblin Archer 🏹");
+	embed.addField("Skills Acquired 🥕", "🏹 Archery, 🍳 Cooking");
+	embed.setColor('GREEN');
+	bot.reply(message, embed)
+});
+
+```
 
 ## Atachments
+It's recommended to use the attachment helper, `discordBot.Attachment`:
 
+![image](https://user-images.githubusercontent.com/6020066/55299122-4fec9900-53e6-11e9-9f8c-f4d235ff15a7.png)
+
+```js
+discordBot.hears('!file', ['direct_message', 'ambient'], (bot, message) => {
+	const attachment = new discordBot.Attachment('./temp.js', "Awesome Script!")
+	bot.reply(message, attachment)
+});
+```
+
+
+```
 ## License
 
 Ⓒ MIT ([Brandon Him / brh55](github.com/@brh55))
