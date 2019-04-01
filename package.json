@@ -1,7 +1,7 @@
 {
   "name": "botkit-discord",
-  "version": "0.0.9",
-  "description": "A Botkit connector for Discord allowing you to create extensible Discord bots.",
+  "version": "0.1.0",
+  "description": "A Botkit connector for Discord with support for text, voice, attachments, embedded messages, and more.",
   "main": "index.js",
   "scripts": {
     "test": "ava"
@@ -12,7 +12,8 @@
     "discord",
     "discord bots",
     "discord javascript",
-    "discord chatbots"
+    "discord chatbots",
+    "discord.js"
   ],
   "author": "Brandon Him",
   "license": "MIT",
