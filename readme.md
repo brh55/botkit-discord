@@ -206,5 +206,5 @@ discordBot.hears('!file', ['direct_message', 'ambient'], (bot, message) => {
 
 Please let me know if you plan on forking or would like professional support.
 
-This wouldn't be possible without all the tremendous effort and contributors behind[discord.js](https://github.com/discordjs/iscord.js).
+This wouldn't be possible without all the tremendous effort and contributors behind[discord.js](https://github.com/discordjs/discord.js).
 
