@@ -22,9 +22,7 @@
     "clone-deep": "^4.0.1",
     "discord.js": "^11.4.2",
     "erlpack": "github:hammerandchisel/erlpack",
-    "ffmpeg-binaries": "^4.0.0",
     "lodash.omit": "^4.5.0",
-    "opusscript": "0.0.6",
     "uws": "^99.0.0"
   },
   "devDependencies": {
