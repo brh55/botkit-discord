@@ -160,7 +160,8 @@ discordBot.on('guildMemberAdd', member => {
 - "warn"
 
 ## Audio/Voice Functionalities
-This connector utilizes the built-in `discord.js` audio functionality, but requires additional steps to work properly:
+This connector utilizes the built-in [`discord.js` audio functionality](https://discord.js.org/#/docs/main/stable/topics/voice), but requires additional steps to work properly:
+
 1. First install a desired audio enconder either `node-opus` or `opusscript` (discord.js recommends `node-opus` for performance reasons, but `opusscript` works for development purposes)
     - `npm install node-opus`
     - `npm install opusscript` 
