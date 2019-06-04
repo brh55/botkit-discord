@@ -79,7 +79,7 @@ When you want your bot to respond to particular events that may be relevant, you
 
 ```javascript
 discordBot.on(EVENT_NAME, event => {
-	// do stuff
+    // do stuff
 });
 ```
 
@@ -159,12 +159,36 @@ discordBot.on('guildMemberAdd', member => {
 - "voiceStateUpdate"
 - "warn"
 
-## API
+## Audio/Voice Functionalities
+This connector utilizes the built-in `discord.js` audio functionality, but requires additional steps to work properly:
+1. First install a desired audio enconder either `node-opus` or `opusscript` (discord.js recommends `node-opus` for performance reasons, but `opusscript` works for development purposes)
+    - `npm install node-opus`
+    - `npm install opusscript` 
+2. Next install FFMPEG, you can choose any of the following methods:
+    1. (Mac) Install through homebrew: `brew update && brew install ffmpeg`
+    2. (Linux) Install through `apt update && apt install ffmpeg`
+    3. (All) [Download and install](https://ffmpeg.org/download.html) the binaries manually through the FFMPEG site
+    
+For convenience, you'll be able to use the voice functionality if the sender of the message is already in a voice channel. This will be available in the `.api` properties of the bot object passed as a parameter in the event handler.
 
-For convenience the following methods from discord.js ibrary is available on the `controller.api` during specific contexts
+- `joinVoiceChannel()`
+- `leaveVoiceChannel()`
 
-- joinVoiceChannel
-- leaveVoiceChannel
+Example Usage:
+```js
+discordBot.hears('!audio', 'ambient', (bot, message) => {
+    if (!bot.api.joinVoiceChannel) {
+       return bot.reply(message, 'I would if you were in a voice channel!');
+    }
+
+    bot.api.joinVoiceChannel().then(connection => {
+        dispatcher = connection.play('./music/troll.mp3')
+        dispatcher.setVolume(0.5)
+     }).catch(err => {
+        console.log(`Failed to play audio: ${err}`);
+     });
+})
+```
 
 ## Embeds
 To use embeds, it's preferred to use the Discord.js RichEmbed builder, `discordBot.RichEmbed()`.
