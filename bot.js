@@ -24,9 +24,11 @@ function botDefinition (botkit, configuration) {
 	}
 
 	bot.reply = (src, resp, cb) => {
-		const message = resp;
+		let message = {};
 		if (typeof(resp) == 'string') {
-			message.text = Object.assign({}, resp);
+			message.text = resp;
+		} else {
+			message = resp;
 		}
 
 		src.response = message;
