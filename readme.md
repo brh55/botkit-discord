@@ -2,6 +2,10 @@
 
 > 🤖👾 A Botkit connector for Discord with support for text, voice, attachments, embedded messages, and more.
 
+![Travis (.org)](https://img.shields.io/travis/brh55/botkit-discord.svg?style=flat-square) [![Coveralls branch](https://img.shields.io/coveralls/brh55/botkit-discord/master.svg?style=flat-square)](https://coveralls.io/github/brh55/botkit-discord) [![npm badge](https://img.shields.io/npm/dt/botkit-discord.svg?style=flat-square)](https://www.npmjs.com/package/botkit-discord)
+
+
+
 This Botkit platform connector is intended to be used for Discord. Underneath the hood, this connector is utilizing [discord.js](https://github.com/discordjs/discord.js). Currently the connector supports the following features:
 
 - **Text:** DM Channel, Group DM Channel, Guild Text Message
