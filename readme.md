@@ -2,7 +2,7 @@
 
 > 🤖👾 A Botkit connector for Discord with support for text, voice, attachments, embedded messages, and more.
 
-![Travis (.org)](https://img.shields.io/travis/brh55/botkit-discord.svg?style=flat-square) [![Coveralls branch](https://img.shields.io/coveralls/brh55/botkit-discord/master.svg?style=flat-square)](https://coveralls.io/github/brh55/botkit-discord) [![npm badge](https://img.shields.io/npm/dt/botkit-discord.svg?style=flat-square)](https://www.npmjs.com/package/botkit-discord)
+[![Travis (.org)](https://img.shields.io/travis/brh55/botkit-discord.svg?style=flat-square)](https://travis-ci.org/brh55/botkit-discord) [![Coveralls branch](https://img.shields.io/coveralls/brh55/botkit-discord/master.svg?style=flat-square)](https://coveralls.io/github/brh55/botkit-discord) [![npm badge](https://img.shields.io/npm/dt/botkit-discord.svg?style=flat-square)](https://www.npmjs.com/package/botkit-discord)
 
 
 
