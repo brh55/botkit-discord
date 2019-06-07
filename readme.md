@@ -17,6 +17,8 @@ This Botkit platform connector is intended to be used for Discord. Underneath th
 ![Example Gif](http://g.recordit.co/WzQ3XkJm5A.gif)
 
 ## Install
+*Note: Minimum Node Requirement 8+*
+
 `$ npm install botkit-discord`
 
 ## Basic Usage
