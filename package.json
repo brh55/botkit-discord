@@ -4,7 +4,7 @@
   "description": "A Botkit connector for Discord with support for text, voice, attachments, embedded messages, and more.",
   "main": "index.js",
   "scripts": {
-    "test": "ava"
+    "test": "nyc ava"
   },
   "keywords": [
     "botkit",
@@ -27,6 +27,14 @@
   },
   "devDependencies": {
     "ava": "^0.25.0",
-    "hoek": ">=4.2.1"
+    "hoek": ">=4.2.1",
+    "coveralls": "^2.11.12",
+    "nyc": "^10.0.0",
+  },
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text"
+    ]
   }
 }
