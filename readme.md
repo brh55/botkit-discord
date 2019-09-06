@@ -76,7 +76,7 @@ discordBot.hears('b!play', 'ambient', (bot, message) => {
 ```
 ### Example Projects
 - [Magic-8 Ball](https://github.com/brh55/discord-magic-8-ball)
-- [Pokedex](https://github.com/brh55/pokedex-discord-bot) - Work in progress, but allows users to search for Pokemon through a  Pokedex bot, read the [written tutorial](https://medium.com/@HimBrandon/discord-pok%C3%A9dex-chatbot-tutorial-part-1-b003b7decb5e)
+- [Pokedex](https://github.com/brh55/pokedex-discord-bot) - Work in progress, but allows users to search for Pokemon through a  Pokedex bot and providing a similar output experience, as well as a "text-to-speech" to the user. Read the [written tutorial](https://medium.com/@HimBrandon/discord-pok%C3%A9dex-chatbot-tutorial-part-1-b003b7decb5e)
 - [Glitch Examples](https://glitch.com/@glitch/discord)
     - [Starter Kit for Glitch](https://glitch.com/~starter-discord) - Quickly deploy a Discord bot with easy to follow step-by-step instructions
     - [Gritty Bot](https://glitch.com/~grittybot) - Using Giphy and sports API integration to provide fun and witty interactions
