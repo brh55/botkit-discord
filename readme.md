@@ -76,7 +76,7 @@ discordBot.hears('b!play', 'ambient', (bot, message) => {
 ```
 ### Example Projects
 - [Magic-8 Ball](https://github.com/brh55/discord-magic-8-ball)
-- More to come...
+- [Glitch Examples](https://glitch.com/@glitch/discord)
 
 Refer to [Botkit documentation](https://botkit.ai/docs/) to utilize all of the other Botkit features.
 
