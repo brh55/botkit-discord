@@ -3,7 +3,7 @@ const joinVoiceChannel = (message) => async () => {
 		throw Error('User is not in a voice channel');
 
 	try {
-		const connection = await message.member.voiceChannel.join();
+		const connection = await message.raw_message.member.voiceChannel.join();
 		return connection;
 	} catch (error) {
 		throw Error(error);
@@ -11,7 +11,8 @@ const joinVoiceChannel = (message) => async () => {
 };
 
 const leaveVoiceChannel = (message) => () => {
-	const voiceChannel = message.member.voiceChannel;
+	const voiceChannel = message.raw_message.member.voiceChannel;
+
 	if (voiceChannel) {
 		voiceChannel.leave();
 	}

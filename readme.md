@@ -174,12 +174,12 @@ This connector utilizes the built-in [`discord.js` audio functionality](https://
 
 1. First install a desired audio enconder either `node-opus` or `opusscript` (discord.js recommends `node-opus` for performance reasons, but `opusscript` works for development purposes)
     - `npm install node-opus`
-    - `npm install opusscript` 
+    - `npm install opusscript`
 2. Next install FFMPEG, you can choose any of the following methods:
     1. (Mac) Install through homebrew: `brew update && brew install ffmpeg`
     2. (Linux) Install through `apt update && apt install ffmpeg`
     3. (All) [Download and install](https://ffmpeg.org/download.html) the binaries manually through the FFMPEG site
-    
+
 For convenience, you'll be able to use the voice functionality if the sender of the message is already in a voice channel. This will be available in the `.api` properties of the bot object passed as a parameter in the event handler.
 
 - `joinVoiceChannel()`
@@ -193,8 +193,13 @@ discordBot.hears('!audio', 'ambient', (bot, message) => {
     }
 
     bot.api.joinVoiceChannel().then(connection => {
-        dispatcher = connection.play('./music/troll.mp3')
-        dispatcher.setVolume(0.5)
+		// Absolute path to local mp3 file
+        dispatcher = connection.playFile('/Users/jdoe1/projects/music-bot/assets/song.mp3')
+		dispatcher.setVolume(0.5)
+		dispatcher.on('end', () => {
+			bot.api.leaveVoiceChannel();
+			dispatcher.destroy();
+		});
      }).catch(err => {
         console.log(`Failed to play audio: ${err}`);
      });
