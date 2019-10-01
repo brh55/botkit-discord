@@ -5,7 +5,6 @@
 [![Travis (.org)](https://img.shields.io/travis/brh55/botkit-discord.svg?style=flat-square)](https://travis-ci.org/brh55/botkit-discord) [![Coveralls branch](https://img.shields.io/coveralls/brh55/botkit-discord/master.svg?style=flat-square)](https://coveralls.io/github/brh55/botkit-discord) [![npm badge](https://img.shields.io/npm/dt/botkit-discord.svg?style=flat-square)](https://www.npmjs.com/package/botkit-discord)
 
 
-
 This Botkit platform connector is intended to be used for Discord. Underneath the hood, this connector is utilizing [discord.js](https://github.com/discordjs/discord.js). Currently the connector supports the following features:
 
 - **Text:** DM Channel, Group DM Channel, Guild Text Message
@@ -17,7 +16,7 @@ This Botkit platform connector is intended to be used for Discord. Underneath th
 ![Example Gif](http://g.recordit.co/WzQ3XkJm5A.gif)
 
 ## Install
-*Note: Minimum Node Requirement 8+, Recommended 10*
+*Note: Minimum Node Requirement 8+, Recommended 10, and >=10.10.0 if you use audio.*
 
 `$ npm install botkit-discord`
 
@@ -49,11 +48,12 @@ const config = {
 // Let's join the user's voice channel if we recieve a "b!play"
 // play a song and leave, get rating from user, and save result
 // if no rating is stored, we can end convoersation
-discordBot.hears('b!play', 'ambient', (bot, message) => {
-	bot.api.joinVoiceChannel().then(connection => {
-		dispatcher = connection.play('./music/funny.mp3')
+discordBot.hears('b!play', 'ambient', async (bot, message) => {
+	try {
+		const connection = await bot.api.joinVoiceChannel();
+		const dispatcher = connection.playFile('/Users/brh55/Music/funny.mp3');
 		dispatcher.setVolume(0.5)
-		dispatcher.on('finish', () => {
+		dispatcher.on('end', () => {
 			bot.createConversation(message, (err, convo) => {
 				convo.addQuestion('How would rate that from a scale of 0 to 5?', (response, convo) => {
 					const numberRating = response.text.match(/[0-5]/g);
@@ -66,17 +66,19 @@ discordBot.hears('b!play', 'ambient', (bot, message) => {
 					convo.next();
 				});
 			});
-		})
-		bot.api.leaveVoiceChannel();
-	}).catch(err => {
+			// Leave at the end of the channel
+			bot.api.leaveVoiceChannel();
+		});
+	} catch (e) {
 		// If the user is not in a voice channel, tell them to join one
-		bot.reply('Dude, you\'ll need to join a voice channel and try again');
+		bot.reply('Dude are you in voice channel?');
 	});
 });
 ```
+
 ### Example Projects
 - [Magic-8 Ball](https://github.com/brh55/discord-magic-8-ball)
-- [Pokedex](https://github.com/brh55/pokedex-discord-bot) - Work in progress, but allows users to search for Pokemon through a  Pokedex bot and providing a similar output experience, as well as a "text-to-speech" to the user. Read the [written tutorial](https://medium.com/@HimBrandon/discord-pok%C3%A9dex-chatbot-tutorial-part-1-b003b7decb5e)
+- [Pokedex Audio Discord Bot](https://github.com/brh55/pokedex-discord-bot) - Allows users to search for Pokemon through a Pokedex bot and plays the audio description in a voice channel. Read the [written tutorial](https://medium.com/@HimBrandon/discord-pok%C3%A9dex-chatbot-tutorial-part-1-b003b7decb5e)
 - [Glitch Examples](https://glitch.com/@glitch/discord)
     - [Starter Kit for Glitch](https://glitch.com/~starter-discord) - Quickly deploy a Discord bot with easy to follow step-by-step instructions
     - [Gritty Bot](https://glitch.com/~grittybot) - Using Giphy and sports API integration to provide fun and witty interactions
@@ -173,7 +175,7 @@ discordBot.on('guildMemberAdd', member => {
 This connector utilizes the built-in [`discord.js` audio functionality](https://discord.js.org/#/docs/main/stable/topics/voice), but requires additional steps to work properly:
 
 1. First install a desired audio enconder either `node-opus` or `opusscript` (discord.js recommends `node-opus` for performance reasons, but `opusscript` works for development purposes)
-    - `npm install node-opus`
+    - `npm install node-opus` - *Requires >= 10.10.0 Node*
     - `npm install opusscript`
 2. Next install FFMPEG, you can choose any of the following methods:
     1. (Mac) Install through homebrew: `brew update && brew install ffmpeg`
@@ -193,13 +195,13 @@ discordBot.hears('!audio', 'ambient', (bot, message) => {
     }
 
     bot.api.joinVoiceChannel().then(connection => {
-		// Absolute path to local mp3 file
+	// Absolute path to local mp3 file
         dispatcher = connection.playFile('/Users/jdoe1/projects/music-bot/assets/song.mp3')
-		dispatcher.setVolume(0.5)
-		dispatcher.on('end', () => {
-			bot.api.leaveVoiceChannel();
-			dispatcher.destroy();
-		});
+	dispatcher.setVolume(0.5)
+	dispatcher.on('end', () => {
+		bot.api.leaveVoiceChannel();
+		dispatcher.destroy();
+	});
      }).catch(err => {
         console.log(`Failed to play audio: ${err}`);
      });
@@ -238,6 +240,28 @@ discordBot.hears('!file', ['direct_message', 'ambient'], (bot, message) => {
 	const attachment = new discordBot.Attachment('./temp.js', "Awesome Script!")
 	bot.reply(message, attachment)
 });
+```
+
+Here is an example from the Pokedex Bot:
+
+![image](https://user-images.githubusercontent.com/6020066/65992753-af366f00-e444-11e9-918d-54f5502b6a8b.png)
+
+**Sample Code:**
+```js
+const embed = new controller.RichEmbed();
+embed.setAuthor(
+	"Pokedex",
+	"https://icon-library.net/images/pokedex-icon/pokedex-icon-15.jpg" // Grabbing this icon from icon-library
+);
+embed.setTitle(formatName(result.name));
+embed.setDescription(`**No. ${result.id}** \n **${result.types[0].type.name}**`);
+embed.setThumbnail(result.sprites.front_default);
+embed.addField("Weight", formatWeight(result.weight));
+embed.addField("Height", formatHeight(result.height));
+embed.setColor("GREEN");
+embed.addField("Description", result.description);
+
+bot.reply(message, embed);
 ```
 
 ## License
