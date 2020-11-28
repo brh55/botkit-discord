@@ -82,18 +82,18 @@ test('Format: Correct Attachments, Embeds, and Responses', t => {
 	t.is(platformMessage.channel.id, '518588622123827211');
 	t.is(platformMessage.text, 'hello back');
 
+	const msgEmbed = new Discord.MessageEmbed;
+	msgEmbed.setAuthor("test author");
 	const embedPlatformMessage = middlewares.format.exec({}, {
-		response: new Discord.RichEmbed({
-			author: "test author"
-		})
+		response: msgEmbed
 	}, {});
-	t.is(embedPlatformMessage.options.author, 'test author')
+	t.is(embedPlatformMessage.options.author.name, 'test author');
 
 
 	const attachPlatformMessage = middlewares.format.exec({}, {
-		response: new Discord.Attachment('test.js', 'test123')
+		response: new Discord.MessageAttachment('test.js', 'test123')
 	}, {});
-	t.deepEqual(attachPlatformMessage.options.file.attachment, 'test.js')
+	t.deepEqual(attachPlatformMessage.options.attachment, 'test.js')
 });
 
 test('Recieve: Attach relevant API methods', t => {
