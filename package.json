@@ -18,7 +18,7 @@
   "author": "Brandon Him",
   "license": "MIT",
   "dependencies": {
-    "botkit": "^4.10",
+    "botkit": "^0.7.5",
     "clone-deep": "^4.0.1",
     "discord.js": "^12.5",
     "erlpack": "^0.1.3",
