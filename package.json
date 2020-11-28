@@ -1,6 +1,6 @@
 {
   "name": "botkit-discord",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A Botkit connector for Discord with support for text, voice, attachments, embedded messages, and more.",
   "main": "index.js",
   "scripts": {
@@ -18,12 +18,12 @@
   "author": "Brandon Him",
   "license": "MIT",
   "dependencies": {
-    "botkit": "^0.6.21",
+    "botkit": "^4.10",
     "clone-deep": "^4.0.1",
     "discord.js": "^12.5",
     "erlpack": "^0.1.3",
     "lodash.omit": "^4.5.0",
-    "uws": "^99.0.0"
+    "uws": "^200.0.0"
   },
   "devDependencies": {
     "ava": "^0.25.0",
