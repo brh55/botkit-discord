@@ -38,6 +38,9 @@ const DiscordBot = (configuration) => {
 	});
 
 	client.on('message', async message => {
+		// Check if message is from a bot. If it is, do not continue
+		if (message.author.bot == true) return;
+		
 		discordBotkit.debug(`Received ${message}`);
 		discordBotkit.handleMessageRecieve(message, discordBotkit);
 	});
