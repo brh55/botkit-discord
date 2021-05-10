@@ -18,6 +18,11 @@ const categorize = (bot, message) => {
 		message.type = 'direct_message';
 	}
 
+	// Next two checks need message.text to not be undefined
+	if (message.text === undefined) {
+		message.text = ""
+	}
+
 	if (isMention(botId, message.text)) {
 		message.type = 'mention';
 
