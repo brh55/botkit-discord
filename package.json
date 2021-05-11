@@ -1,6 +1,6 @@
 {
   "name": "botkit-discord",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A Botkit connector for Discord with support for text, voice, attachments, embedded messages, and more.",
   "main": "index.js",
   "scripts": {
