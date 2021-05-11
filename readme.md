@@ -47,7 +47,7 @@ const config = {
 
 // Let's join the user's voice channel if we recieve a "b!play"
 // play a song and leave, get rating from user, and save result
-// if no rating is stored, we can end convoersation
+// if no rating is stored, we can end the conversation
 discordBot.hears('b!play', 'ambient', async (bot, message) => {
 	try {
 		const connection = await bot.api.joinVoiceChannel();
@@ -119,7 +119,7 @@ Server Greeting Referenced in [Docs](https://github.com/discordjs/discord.js/blo
 
 ```js
 discordBot.on('guildMemberAdd', member => {
-  const channel = member.guild.channels.find(ch => ch.name === 'member-log');
+  const channel = member.guild.channels.cache.find(ch => ch.name === 'member-log');
   if (!channel) return;
   channel.send(`Welcome to the server, ${member}`);
 });
@@ -129,10 +129,7 @@ discordBot.on('guildMemberAdd', member => {
 - "channelDelete"
 - "channelPinsUpdate"
 - "channelUpdate"
-- "clientUserGuildSettingsUpdate"
-- "clientUserSettingsUpdate"
 - "debug"
-- "disconnect"
 - "emojiCreate"
 - "emojiDelete"
 - "emojiUpdate"
@@ -141,35 +138,41 @@ discordBot.on('guildMemberAdd', member => {
 - "guildBanRemove"
 - "guildCreate"
 - "guildDelete"
+- "guildIntegrationsUpdate"
 - "guildMemberAdd"
-- "guildMemberAvailable"
 - "guildMemberRemove"
 - "guildMembersChunk"
 - "guildMemberSpeaking"
 - "guildMemberUpdate"
 - "guildUnavailable"
 - "guildUpdate"
+- "invalidated"
+- "inviteCreate"
+- "inviteDelete"
 - "message"
 - "messageDelete"
 - "messageDeleteBulk"
 - "messageReactionAdd"
 - "messageReactionRemove"
 - "messageReactionRemoveAll"
+- "messageReactionRemoveEmoji"
 - "messageUpdate"
 - "presenceUpdate"
 - "rateLimit"
 - "ready"
-- "reconnecting"
-- "resume"
 - "roleCreate"
 - "roleDelete"
 - "roleUpdate"
+- "shardDisconnect"
+- "shardError"
+- "shardReady"
+- "shardReconnecting"
+- "shardResume"
 - "typingStart"
-- "typingStop"
-- "userNoteUpdate"
 - "userUpdate"
 - "voiceStateUpdate"
 - "warn"
+- "webhookUpdate"
 
 ## Audio/Voice Functionalities
 This connector utilizes the built-in [`discord.js` audio functionality](https://discord.js.org/#/docs/main/stable/topics/voice), but requires additional steps to work properly:
@@ -209,14 +212,14 @@ discordBot.hears('!audio', 'ambient', (bot, message) => {
 ```
 
 ## Embeds
-To use embeds, it's preferred to use the Discord.js RichEmbed builder, `discordBot.RichEmbed()`.
+To use embeds, it's preferred to use the Discord.js MessageEmbed builder, `discordBot.MessageEmbed()`.
 
 ![image](https://user-images.githubusercontent.com/6020066/55299068-0dc35780-53e6-11e9-9828-8676119e56a7.png)
 
 
 ```js
 discordBot.hears('!rpg', ['direct_message', 'ambient'], (bot, message) => {
-	const embed = new discordBot.RichEmbed()
+	const embed = new discordBot.MessageEmbed()
 	embed.setAuthor(
 		"Quick RPG Stats",
 		"https://rpglink.com/icon/here"
@@ -231,13 +234,13 @@ discordBot.hears('!rpg', ['direct_message', 'ambient'], (bot, message) => {
 ```
 
 ## Atachments
-It's recommended to use the attachment helper, `discordBot.Attachment`:
+It's recommended to use the attachment helper, `discordBot.MessageAttachment`:
 
 ![image](https://user-images.githubusercontent.com/6020066/55299122-4fec9900-53e6-11e9-9f8c-f4d235ff15a7.png)
 
 ```js
 discordBot.hears('!file', ['direct_message', 'ambient'], (bot, message) => {
-	const attachment = new discordBot.Attachment('./temp.js', "Awesome Script!")
+	const attachment = new discordBot.MessageAttachment('./temp.js', "Awesome Script!")
 	bot.reply(message, attachment)
 });
 ```
@@ -248,7 +251,7 @@ Here is an example from the Pokedex Bot:
 
 **Sample Code:**
 ```js
-const embed = new controller.RichEmbed();
+const embed = new controller.MessageEmbed();
 embed.setAuthor(
 	"Pokedex",
 	"https://icon-library.net/images/pokedex-icon/pokedex-icon-15.jpg" // Grabbing this icon from icon-library
