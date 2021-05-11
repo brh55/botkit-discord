@@ -69,6 +69,10 @@ test('Categorize: Check Accurate Types', t => {
 	insertMessage.text = 'hello! <@123456>';
 	const mentionMessage = middlewares.categorize.exec(botStub, insertMessage);
 	t.is(mentionMessage.type, 'mention');
+
+	insertMessage.text = undefined;
+	const undefMessage = middlewares.categorize.exec(botStub, insertMessage);
+	t.is(mentionMessage.type, 'mention');
 });
 
 test('Format: Correct Attachments, Embeds, and Responses', t => {
