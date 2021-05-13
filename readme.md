@@ -47,7 +47,7 @@ const config = {
 
 // Let's join the user's voice channel if we receive a "b!play"
 // play a song and leave, get rating from user, and save result
-// if no rating is stored, we can end convoersation
+// if no rating is stored, we can end conversation
 discordBot.hears('b!play', 'ambient', async (bot, message) => {
 	try {
 		const connection = await bot.api.joinVoiceChannel();
@@ -75,6 +75,12 @@ discordBot.hears('b!play', 'ambient', async (bot, message) => {
 	});
 });
 ```
+
+### Configuration
+  | Attribute   | Description                                                  | Type                     |
+  | ----------- | ------------------------------------------------------------ | ------------------------ |
+  | token       | Discord bot token                                            | String                   |
+  | replyToSelf | Enable the bot to reply to itself, by default this is turned off, but there may be circumstances when you want to allow that. | Boolean (Default: false) |
 
 ### Example Projects
 - [Magic-8 Ball](https://github.com/brh55/discord-magic-8-ball)
