@@ -45,7 +45,7 @@ const config = {
     token: '**' // Discord bot token
 }
 
-// Let's join the user's voice channel if we recieve a "b!play"
+// Let's join the user's voice channel if we receive a "b!play"
 // play a song and leave, get rating from user, and save result
 // if no rating is stored, we can end convoersation
 discordBot.hears('b!play', 'ambient', async (bot, message) => {

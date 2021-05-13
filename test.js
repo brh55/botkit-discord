@@ -59,8 +59,8 @@ test('Categorize: Check Accurate Types', t => {
 	const insertMessage = normalizedAmbient;
 	insertMessage.type = 'dm';
 	delete insertMessage.guildId;
-	const messageRecieved = middlewares.categorize.exec(botStub, insertMessage);
-	t.is(messageRecieved.type, 'direct_message');
+	const messageReceived = middlewares.categorize.exec(botStub, insertMessage);
+	t.is(messageReceived.type, 'direct_message');
 
 	insertMessage.text = '<@123456> hello!';
 	const directMention = middlewares.categorize.exec(botStub, insertMessage);
@@ -100,7 +100,7 @@ test('Format: Correct Attachments, Embeds, and Responses', t => {
 	t.deepEqual(attachPlatformMessage.options.file.attachment, 'test.js')
 });
 
-test('Recieve: Attach relevant API methods', t => {
+test('Receive: Attach relevant API methods', t => {
 	const stubBot = {};
 	const stubNext = () => {};
 	middlewares.receive.handler(stubBot, {
