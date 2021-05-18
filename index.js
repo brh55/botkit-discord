@@ -16,6 +16,7 @@ const newMessageHandler = (message, controller) => {
 const DiscordBot = (configuration) => {
 	const client = new Discord.Client({});
 	configuration.client = client;
+	configuration.replyToSelf = configuration.replyToSelf || false;
 
 	const discordBotkit = Botkit.core(configuration || {});
 	discordBotkit.defineBot(botDefinition);
@@ -25,7 +26,7 @@ const DiscordBot = (configuration) => {
 	discordBotkit.Attachment = Discord.Attachment;
 
 	// Attach Handlers and Middlewares
-	discordBotkit.handleMessageRecieve = newMessageHandler;
+	discordBotkit.handleMessageReceive = newMessageHandler;
 	discordBotkit.middleware.ingest.use(middleware.ingest.handler);
 	discordBotkit.middleware.normalize.use(middleware.normalize.handler);
 	discordBotkit.middleware.categorize.use(middleware.categorize.handler);
@@ -39,7 +40,17 @@ const DiscordBot = (configuration) => {
 
 	client.on('message', async message => {
 		discordBotkit.debug(`Received ${message}`);
-		discordBotkit.handleMessageRecieve(message, discordBotkit);
+		
+		// Bot replies to itself with the same message
+		// Can allow this by enabling it in the configuration
+		if (
+			message.author.id === configuration.client.user.id &&
+			configuration.replyToSelf === false) {
+			discordBotkit.debug(`Message received from bot, set configuration.replyToSelf to true to allow processing`);
+			return;
+		}
+
+		discordBotkit.handleMessageReceive(message, discordBotkit);
 	});
 
 	// Set up triggers for remaining events
