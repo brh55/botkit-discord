@@ -28,8 +28,8 @@
   "devDependencies": {
     "ava": "^0.25.0",
     "hoek": ">=4.2.1",
-    "coveralls": "^2.11.12",
-    "nyc": "^10.0.0"
+    "coveralls": "^3.1.1",
+    "nyc": "^15.1.0"
   },
   "nyc": {
     "reporter": [
